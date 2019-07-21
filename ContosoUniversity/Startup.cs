@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 
 // notes in dysktra6 we will learn about read related data
 // no problem with dysktra6 just i think I am very new with C# so i need some help with understanding of whats going on in some code that i mark. I will figureout monday.
+// there is one error cause by the very last lane of instuction need to ask what to do in this on monday 
 namespace ContosoUniversity
 {
     public class Startup

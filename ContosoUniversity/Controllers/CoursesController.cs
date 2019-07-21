@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
-
-// automated courses controller
+// generated courses controller 
 
 namespace ContosoUniversity.Controllers
 {
@@ -22,7 +21,7 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index() 
+        public async Task<IActionResult> Index()
         {
             var courses = _context.Courses
                 .Include(c => c.Department)

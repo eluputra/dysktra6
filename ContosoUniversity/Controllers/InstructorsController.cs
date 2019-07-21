@@ -45,7 +45,7 @@ namespace ContosoUniversity.Controllers
                                                      //to it's empty or if there's more than one item
                 viewModel.Courses = instructor.CourseAssignments.Select(s => s.Course);
             }
-
+            /*
             if (courseID != null)
             {
                 ViewData["CourseID"] = courseID.Value;// add the value into course id
@@ -56,6 +56,20 @@ namespace ContosoUniversity.Controllers
                     await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync();
                 }
                 viewModel.Enrollments = selectedCourse.Enrollments; // maybe this is me new with C# but i have some doubt about this line of code functionality need to ask teacher about this particular area
+            }
+
+            return View(viewModel);*/
+
+            if (courseID != null)
+            {
+                ViewData["CourseID"] = courseID.Value;
+                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
+                foreach (Enrollment enrollment in selectedCourse.Enrollments)
+                {
+                    await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync();
+                }
+                viewModel.Enrollments = selectedCourse.Enrollments;
             }
 
             return View(viewModel);
