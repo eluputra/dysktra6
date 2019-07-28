@@ -4,8 +4,8 @@
     ViewData["Title"] = "Courses";
 }
 
-<h2>Courses</h2><!-- change header-->
-
+<h2>Courses</h2>
+<!-- adding the courses tab-->
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CourseID) <!-- added number of column-->
+                @Html.DisplayNameFor(model => model.CourseID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -27,8 +27,6 @@
             <th></th>
         </tr>
     </thead>
-    <!-- having problem when run the database not found--> 
-    <!-- found solution by updating the dabase two times and clicking around the web app-->
     <tbody>
         @foreach (var item in Model)
         {
@@ -43,7 +41,7 @@
                     @Html.DisplayFor(modelItem => item.Credits)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Department.Name) <!-- change column display-->
+                    @Html.DisplayFor(modelItem => item.Department.Name)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CourseID">Edit</a> |

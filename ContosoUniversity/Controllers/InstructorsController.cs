@@ -24,6 +24,42 @@ namespace ContosoUniversity.Controllers
         public async Task<IActionResult> Index(int? id, int? courseID)
         {
             var viewModel = new InstructorIndexData();
+            viewModel.Instructors = await _context.Instructors
+                  .Include(i => i.OfficeAssignment)
+                  .Include(i => i.CourseAssignments)
+                    .ThenInclude(i => i.Course)
+                        .ThenInclude(i => i.Department)
+                  .OrderBy(i => i.LastName)
+                  .ToListAsync();
+
+            if (id != null)
+            {
+                ViewData["InstructorID"] = id.Value;
+                Instructor instructor = viewModel.Instructors.Where(
+                    i => i.ID == id.Value).Single();
+                viewModel.Courses = instructor.CourseAssignments.Select(s => s.Course);
+            }
+
+            if (courseID != null)
+            {
+                ViewData["CourseID"] = courseID.Value;
+                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
+                foreach (Enrollment enrollment in selectedCourse.Enrollments)
+                {
+                    await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync();
+                }
+                viewModel.Enrollments = selectedCourse.Enrollments;
+            }
+
+            return View(viewModel);
+        }
+
+        // the error occur on the below code I dont know what it is but when i try to copy and paste it again it works ! 
+        /* 
+        public async Task<IActionResult> Index(int? id, int? courseID)
+        {
+            var viewModel = new InstructorIndexData();
             viewModel.Instructors = await _context.Instructors // get instructor and added to view model
                   .Include(i => i.OfficeAssignment) // i am not really sure what is i mean is i == number of item?
                   .Include(i => i.CourseAssignments)
@@ -45,7 +81,7 @@ namespace ContosoUniversity.Controllers
                                                      //to it's empty or if there's more than one item
                 viewModel.Courses = instructor.CourseAssignments.Select(s => s.Course);
             }
-            /*
+
             if (courseID != null)
             {
                 ViewData["CourseID"] = courseID.Value;// add the value into course id
@@ -58,22 +94,9 @@ namespace ContosoUniversity.Controllers
                 viewModel.Enrollments = selectedCourse.Enrollments; // maybe this is me new with C# but i have some doubt about this line of code functionality need to ask teacher about this particular area
             }
 
-            return View(viewModel);*/
-
-            if (courseID != null)
-            {
-                ViewData["CourseID"] = courseID.Value;
-                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
-                await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
-                foreach (Enrollment enrollment in selectedCourse.Enrollments)
-                {
-                    await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync();
-                }
-                viewModel.Enrollments = selectedCourse.Enrollments;
-            }
-
             return View(viewModel);
-        }
+        }*/
+
 
         // GET: Instructors/Details/5
         public async Task<IActionResult> Details(int? id)
