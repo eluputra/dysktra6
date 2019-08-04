@@ -1,7 +1,7 @@
 ﻿@model ContosoUniversity.Models.SchoolViewModels.InstructorIndexData
-<!-- changing and edit the instructor page-->
+<!-- changing and edit the instructor page u was copy pasting this last week for some reason it error but after copy it it works-->
 @{
-    ViewData["Title"] = "Instructors";
+    ViewData["Title"] = "Instructors"; <!-- change title-->
 }
 
 <h2>Instructors</h2>
@@ -12,7 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Last Name</th>
+            <!-- addeed general information
+                 last name first name hire date, office, courses-->
+            <th>Last Name</th> 
             <th>First Name</th>
             <th>Hire Date</th>
             <th>Office</th>
@@ -21,6 +23,7 @@
         </tr>
     </thead>
     <tbody>
+        <!-- add the item into the model instructor-->
         @foreach (var item in Model.Instructors)
         {
             string selectedRow = "";

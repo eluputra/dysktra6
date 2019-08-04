@@ -25,7 +25,9 @@ namespace ContosoUniversity.Controllers
         {
             var viewModel = new InstructorIndexData();
             viewModel.Instructors = await _context.Instructors
-                  .Include(i => i.OfficeAssignment)
+                  .Include(i => i.OfficeAssignment)// not really sure what this do, but this is the reference that i understand from the tutorial
+                                                   // At that point in the code, another ThenInclude would be for navigation properties of Student, 
+                                                   //which you don't need. But calling Include starts over with Instructor properties, so you have to go through the chain again, this time specifying Course.Department instead of Course.Enrollments.
                   .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
                         .ThenInclude(i => i.Department)
@@ -43,11 +45,13 @@ namespace ContosoUniversity.Controllers
             if (courseID != null)
             {
                 ViewData["CourseID"] = courseID.Value;
-                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();// in the code bellow i made mistake of this code i am not really sure what happen but it work now
                 await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
                 foreach (Enrollment enrollment in selectedCourse.Enrollments)
                 {
-                    await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync();
+                    await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync(); // i am not sure what this one does but according to the tutorial 
+                                                                                            //The ThenInclude method calls for registering data from the code that leads the guides. If instructors and a course are selected, 
+                                                                                            //the code indicated will download the registration groups for the chosen subject and the student groups for each Enrollment.
                 }
                 viewModel.Enrollments = selectedCourse.Enrollments;
             }
@@ -55,7 +59,7 @@ namespace ContosoUniversity.Controllers
             return View(viewModel);
         }
 
-        // the error occur on the below code I dont know what it is but when i try to copy and paste it again it works ! 
+        // the error occur on the below code I dont know what it is but when i try to copy and paste it again it works i will not delete this until i know whats wrong ! 
         /* 
         public async Task<IActionResult> Index(int? id, int? courseID)
         {
