@@ -41,7 +41,8 @@
                     @Html.DisplayFor(modelItem => item.Credits)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Department.Name) <!-- changed department -->
+                    @Html.DisplayFor(modelItem => item.Department.Name) <!-- changed department Name The code displays the Name property of the Department entity 
+                                                                            that's loaded into the Department navigation property:-->
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CourseID">Edit</a> |

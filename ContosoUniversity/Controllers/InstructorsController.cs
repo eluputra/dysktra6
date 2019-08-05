@@ -46,7 +46,9 @@ namespace ContosoUniversity.Controllers
             {
                 ViewData["CourseID"] = courseID.Value;
                 var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();// in the code bellow i made mistake of this code i am not really sure what happen but it work now
-                await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
+                await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();// I think my mistake was this one. This code is to The new code drops the ThenInclude
+                                                                                                //method calls for enrollment data from the code that retrieves instructor entities. 
+                                                                                                        
                 foreach (Enrollment enrollment in selectedCourse.Enrollments)
                 {
                     await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync(); // i am not sure what this one does but according to the tutorial 
